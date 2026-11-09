@@ -1,6 +1,6 @@
 # ShelfFlow
 
-## Local-First Agentic AI Decision Support System for Supermarket Inventory Risk
+## Agentic AI Decision Support System for Supermarket Inventory Risk
 
 ShelfFlow is a final-year-project prototype that upgrades an existing supermarket stock workflow with Agentic AI decision support.
 
