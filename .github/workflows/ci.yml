@@ -1,0 +1,60 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+      - develop
+  pull_request:
+    branches:
+      - main
+      - develop
+
+permissions:
+  contents: read
+
+jobs:
+  quality:
+    name: Check frontend and backend
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6
+
+      - name: Set up Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version-file: .bun-version
+
+      - name: Install dependencies
+        run: bun install --frozen-lockfile
+
+      - name: Check backend types
+        run: bun --cwd backend run typecheck
+
+      - name: Check frontend types
+        run: bun --cwd frontend run typecheck
+
+      - name: Lint backend
+        run: bun --cwd backend run lint
+
+      - name: Lint frontend
+        run: bun --cwd frontend run lint
+
+      - name: Check Drizzle migrations
+        run: bun --cwd backend run db:check
+
+      - name: Run backend tests
+        run: bun --cwd backend test
+        env:
+          NODE_ENV: test
+          DATABASE_URL: postgresql://shelfflow:shelfflow@localhost:5432/shelfflow_test
+          BETTER_AUTH_SECRET: ci-test-secret
+          BETTER_AUTH_URL: http://localhost:3001
+          WEB_URL: http://localhost:3000
+
+      - name: Build frontend
+        run: bun --cwd frontend run build
+        env:
+          NEXT_PUBLIC_API_URL: http://localhost:3001
