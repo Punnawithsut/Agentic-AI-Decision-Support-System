@@ -1,12 +1,30 @@
 {
-  "name": "backend",
-  "module": "index.ts",
+  "name": "shelfflow-backend",
   "type": "module",
   "private": true,
+  "scripts": {
+    "dev": "bun --watch src/server.ts",
+    "start": "bun src/server.ts",
+    "typecheck": "tsc --noEmit",
+    "db:generate": "drizzle-kit generate --config drizzle.config.ts",
+    "db:migrate": "drizzle-kit migrate --config drizzle.config.ts",
+    "db:studio": "drizzle-kit studio --config drizzle.config.ts"
+  },
   "devDependencies": {
-    "@types/bun": "latest"
+    "@types/bun": "^1.4.4",
+    "drizzle-kit": "^0.31.11"
   },
   "peerDependencies": {
     "typescript": "^5"
+  },
+  "dependencies": {
+    "@better-auth/drizzle-adapter": "^1.7.20",
+    "@elysia/openapi": "^1.4.17",
+    "@elysiajs/cors": "^1.4.3",
+    "better-auth": "^1.7.20",
+    "drizzle-orm": "^0.45.4",
+    "elysia": "^1.4.32",
+    "postgres": "^4.1.1",
+    "zod": "^4.6.7"
   }
 }
