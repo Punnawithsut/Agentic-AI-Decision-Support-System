@@ -1,0 +1,13 @@
+{
+  "name": "agentic-ai-decision-support-system",
+  "private": true,
+  "scripts": {
+    "dev:frontend": "bun --cwd frontend dev",
+    "dev:backend": "bun --cwd backend dev",
+    "dev": "concurrently \"bun run dev:backend\" \"bun run dev:frontend\"",
+    "typecheck": "bun --cwd backend typecheck && bun --cwd frontend typecheck"
+  },
+  "devDependencies": {
+    "concurrently": "latest"
+  }
+}
