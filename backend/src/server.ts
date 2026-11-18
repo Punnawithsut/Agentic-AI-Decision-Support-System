@@ -1,7 +1,9 @@
 import { Elysia, t } from "elysia";
 import { cors } from "@elysiajs/cors";
-import { openapi } from "@elysia/openapi";
+import { swagger } from "@elysiajs/swagger";
 import { auth } from "./lib/auth";
+
+const port = Number(process.env.PORT ?? 3001);
 
 const app = new Elysia()
   .use(
@@ -13,8 +15,7 @@ const app = new Elysia()
     }),
   )
   .use(
-    openapi({
-      provider: "swagger-ui",
+    swagger({
       documentation: {
         info: {
           title: "ShelfFlow API",
@@ -23,7 +24,6 @@ const app = new Elysia()
         },
         tags: [
           { name: "Health", description: "Service health" },
-          { name: "Inventory", description: "Batch and risk operations" },
         ],
       },
     }),
@@ -35,20 +35,8 @@ const app = new Elysia()
       summary: "Check API health",
     },
   })
-  .get("/api/batches", ({ query }) => ({
-    storeId: query.storeId,
-    items: [],
-  }), {
-    query: t.Object({
-      storeId: t.String(),
-    }),
-    detail: {
-      tags: ["Inventory"],
-      summary: "List batches for a store",
-    },
-  })
-  .listen(Number(process.env.PORT ?? 3001));
+  .listen(port);
 
-console.log(`API: http://localhost:${app.server?.port}` );
-console.log("Swagger UI: http://localhost:3001/openapi" );
-console.log("OpenAPI JSON: http://localhost:3001/openapi/json" );
+console.log(`API: http://localhost:${app.server?.port}`);
+console.log(`Swagger UI: http://localhost:${port}/swagger`);
+console.log(`OpenAPI JSON: http://localhost:${port}/swagger/json`);
